@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 
 def calculate_grade(percentage):
     if percentage >= 90:
@@ -11,10 +12,9 @@ def calculate_grade(percentage):
         return "C"
     elif percentage >= 50:
         return "D"
-    else:
-        return "F"
+    return "F"
 
-def load_students(filename):
+def load_students(filename="students.csv"):
     students = []
     with open(filename, newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
@@ -38,13 +38,12 @@ def show_report(students):
             f'Grade={student["Grade"]}'
         )
 
-    topper = max(students, key=lambda x: x["Percentage"])
     average = sum(s["Percentage"] for s in students) / len(students)
+    topper = max(students, key=lambda x: x["Percentage"])
 
     print("\n===== SUMMARY =====")
-    print(f'Class Average: {average:.2f}%')
+    print(f"Class Average: {average:.2f}%")
     print(f'Topper: {topper["Name"]} ({topper["Percentage"]:.2f}%)')
 
 if __name__ == "__main__":
-    data = load_students("students.csv")
-    show_report(data)
+    show_report(load_students())
